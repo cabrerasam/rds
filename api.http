@@ -24,6 +24,7 @@ POST http://localhost:3000/posts
 Content-Type: application/json
 
 {
+    "date": "2024-06-20T12:00:00.000Z",
     "title": "Post 50asddfghdf",
     "imgs": [
         "https://unsplash.com/es/fotos/teclado-negro-en-el-escritorio-9juYjd6iQLU",
@@ -38,7 +39,7 @@ Content-Type: application/json
 }
 
 ### Update
-PUT http://localhost:3000/posts/f756a007-56fb-4e63-9137-0cec6782430c
+PUT http://localhost:3000/posts/7e60d325-603c-4de5-990d-fbcf2f18d4d6
 Content-Type: application/json
 
 {

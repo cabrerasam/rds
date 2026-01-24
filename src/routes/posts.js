@@ -12,6 +12,7 @@ export const postsRouter = () => {
         return res.status(400).send({ message: 'Missing data' })
       }
       const newPost = await PostDB.create({
+        date: result.date,
         title: result.title,
         imgs: result.imgs,
         excerpt: result.excerpt,

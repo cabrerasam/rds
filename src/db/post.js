@@ -6,6 +6,7 @@ const { Schema } = new DBLocal({ path: './db' })
 
 const Post = Schema('Post', {
   _id: { type: String, required: true },
+  date: { type: Date, required: true, default: () => new Date() },
   title: { type: String, required: true },
   imgs: { type: [String], required: false },
   excerpt: { type: String, required: true },
@@ -13,21 +14,33 @@ const Post = Schema('Post', {
   tags: { type: [String], required: false }
 })
 
+const createPostSchema = z.object({
+  date: z.string().default(() => new Date()),
+  title: z.string().min(1),
+  imgs: z.array(z.string()).optional(),
+  excerpt: z.string().min(1),
+  content: z.array(z.string()).min(1),
+  tags: z.array(z.string()).optional()
+})
+
+const updatePostSchema = z.object({
+  title: z.string().min(1, 'Title is required').optional(),
+  imgs: z.array(z.string()).optional(),
+  excerpt: z.string().min(1, 'Excerpt is required').optional(),
+  content: z.array(z.string()).min(1, 'Content is required').optional(),
+  tags: z.array(z.string()).optional()
+})
+
 export class PostDB {
-  static async create ({ title, imgs = [], excerpt, content = [], tags = [] }) {
+  static async create ({ date, title, imgs = [], excerpt, content = [], tags = [] }) {
     try {
-      const parsed = z.object({
-        title: z.string().min(1, 'Title is required'),
-        imgs: z.array(z.string()).optional(),
-        excerpt: z.string().min(1, 'Excerpt is required'),
-        content: z.array(z.string()).min(1, 'Content is required'),
-        tags: z.array(z.string()).optional()
-      }).parse({ title, imgs, excerpt, content, tags })
+      const parsed = createPostSchema.parse({ date, title, imgs, excerpt, content, tags })
 
       const id = crypto.randomUUID()
 
       return await Post.create({
         _id: id,
+        date: parsed.date,
         title: parsed.title,
         imgs: parsed.imgs,
         excerpt: parsed.excerpt,
@@ -47,13 +60,7 @@ export class PostDB {
     }
 
     try {
-      const parsed = z.object({
-        title: z.string().min(1, 'Title is required').optional(),
-        imgs: z.array(z.string()).optional(),
-        excerpt: z.string().min(1, 'Excerpt is required').optional(),
-        content: z.array(z.string()).min(1, 'Content is required').optional(),
-        tags: z.array(z.string()).optional()
-      }).parse({ title, imgs, excerpt, content, tags })
+      const parsed = updatePostSchema.parse({ title, imgs, excerpt, content, tags })
 
       if (parsed.title) post.title = parsed.title
       if (parsed.imgs) post.imgs = parsed.imgs
