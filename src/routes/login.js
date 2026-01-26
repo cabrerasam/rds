@@ -28,7 +28,7 @@ export const loginRouter = () => {
         username: result.username
       }
 
-      const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '1h' })
+      const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '3h' })
 
       res
         .cookie('access_token', token, {
@@ -36,7 +36,7 @@ export const loginRouter = () => {
           secure: process.env.NODE_ENV === 'production',
           sameSite: 'strict'
         })
-        .json({ Username: result.username, message: 'Logged in successfully' })
+        .json({ username: result.username, message: 'Logged in successfully' })
     } catch (error) {
       res.status(500).json({ message: 'Error logging in', error: error.message })
     }
