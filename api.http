@@ -71,3 +71,37 @@ Content-Type: application/json
 
 ### Logout
 POST http://localhost:3000/login/logout
+
+### PUBLICITY
+GET http://localhost:3000/publicity
+
+### Get Active Publicity
+GET http://localhost:3000/publicity/active
+
+### Get by ID
+GET http://localhost:3000/publicity/afa314ee-c4fc-4f0a-a21d-558cbb475861
+
+### Create Publicity
+POST http://localhost:3000/publicity
+Content-Type: application/json
+
+{
+    "title": "Promoción especial",
+    "content": "Descuento del 50% en todos los productos",
+    "image": "https://example.com/promo.jpg",
+    "active": true
+}
+
+### Update Publicity
+PUT http://localhost:3000/publicity/afa314ee-c4fc-4f0a-a21d-558cbb475861
+Content-Type: application/json
+
+{
+    "title": "Promoción actualizada",
+    "content": "Descuento del 60% en todos los productos",
+    "image": "https://example.com/promo-updated.jpg",
+    "active": true
+}
+
+### Delete Publicity
+DELETE http://localhost:3000/publicity/afa314ee-c4fc-4f0a-a21d-558cbb475861
