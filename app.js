@@ -8,6 +8,7 @@ import { userRouter } from './src/routes/users.js'
 import { PORT } from './config.js'
 import { marqueeRouter } from './src/routes/marqee.js'
 import { publicityRouter } from './src/routes/publicity.js'
+import { videoRouter } from './src/routes/video.js'
 
 const app = express()
 
@@ -29,6 +30,7 @@ app.use('/users', userRouter())
 app.use('/posts', postsRouter())
 app.use('/marquees', marqueeRouter())
 app.use('/publicity', publicityRouter())
+app.use('/videos', videoRouter())
 
 app.get('/', authorization, (req, res) => {
   res.send('Hello World!')
