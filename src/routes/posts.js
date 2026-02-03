@@ -15,7 +15,7 @@ export const postsRouter = () => {
         date: result.date,
         title: result.title,
         imgs: result.imgs,
-        video: result.video,
+        videos: result.video,
         excerpt: result.excerpt,
         content: result.content,
         tags: result.tags
@@ -39,7 +39,7 @@ export const postsRouter = () => {
         id,
         title: result.title,
         imgs: result.imgs,
-        video: result.video,
+        videos: result.videos,
         excerpt: result.excerpt,
         content: result.content,
         tags: result.tags

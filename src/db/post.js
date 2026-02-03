@@ -9,7 +9,7 @@ const Post = Schema('Post', {
   date: { type: Date, required: true, default: () => new Date() },
   title: { type: String, required: true },
   imgs: { type: [String], required: false },
-  video: { type: [String], required: false },
+  videos: { type: [String], required: true },
   excerpt: { type: String, required: true },
   content: { type: [String], required: true },
   tags: { type: [String], required: false }
@@ -19,7 +19,7 @@ const createPostSchema = z.object({
   date: z.string().default(() => new Date()),
   title: z.string().min(1),
   imgs: z.array(z.string()).optional(),
-  video: z.array(z.string()).optional(),
+  videos: z.array(z.string()),
   excerpt: z.string().min(1),
   content: z.array(z.string()).min(1),
   tags: z.array(z.string()).optional()
@@ -28,16 +28,16 @@ const createPostSchema = z.object({
 const updatePostSchema = z.object({
   title: z.string().min(1, 'Title is required').optional(),
   imgs: z.array(z.string()).optional(),
-  video: z.array(z.string()).optional(),
+  videos: z.array(z.string()),
   excerpt: z.string().min(1, 'Excerpt is required').optional(),
   content: z.array(z.string()).min(1, 'Content is required').optional(),
   tags: z.array(z.string()).optional()
 })
 
 export class PostDB {
-  static async create ({ date, title, imgs = [], video = [], excerpt, content = [], tags = [] }) {
+  static async create ({ date, title, imgs = [], videos = [], excerpt, content = [], tags = [] }) {
     try {
-      const parsed = createPostSchema.parse({ date, title, imgs, video, excerpt, content, tags })
+      const parsed = createPostSchema.parse({ date, title, imgs, videos, excerpt, content, tags })
       const id = crypto.randomUUID()
 
       return await Post.create({
@@ -45,7 +45,7 @@ export class PostDB {
         date: parsed.date,
         title: parsed.title,
         imgs: parsed.imgs,
-        video: parsed.video,
+        videos: parsed.videos,
         excerpt: parsed.excerpt,
         content: parsed.content,
         tags: parsed.tags
@@ -56,24 +56,25 @@ export class PostDB {
     }
   }
 
-  static async updateOne ({ id, title, imgs, video, excerpt, content, tags }) {
+  static async updateOne ({ id, title, imgs, videos, excerpt, content, tags }) {
     const post = Post.findOne({ _id: id })
     if (!post) {
       throw new Error('Post not found')
     }
 
     try {
-      const parsed = updatePostSchema.parse({ title, imgs, video, excerpt, content, tags })
+      const parsed = updatePostSchema.parse({ title, imgs, videos, excerpt, content, tags })
 
       if (parsed.title) post.title = parsed.title
       if (parsed.imgs) post.imgs = parsed.imgs
-      if (parsed.video) post.video = parsed.video
+      if (parsed.videos) post.videos = parsed.videos
       if (parsed.excerpt) post.excerpt = parsed.excerpt
       if (parsed.content) post.content = parsed.content
       if (parsed.tags) post.tags = parsed.tags
 
       return await post.save()
     } catch (error) {
+      console.error(error)
       throw new Error('Invalid post data')
     }
   }
