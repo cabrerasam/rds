@@ -74,7 +74,6 @@ export class PostDB {
 
       return await post.save()
     } catch (error) {
-      console.error(error)
       throw new Error('Invalid post data')
     }
   }

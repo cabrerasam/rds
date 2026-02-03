@@ -46,7 +46,6 @@ export const postsRouter = () => {
       })
       res.status(200).send({ message: 'Post updated', updatedPost: updatedPost._id })
     } catch (error) {
-      console.log(error)
       res.status(500).send({ message: 'Error updating post' })
     }
   })
@@ -60,7 +59,6 @@ export const postsRouter = () => {
       await PostDB.delete(id)
       res.status(200).send({ message: 'Post deleted', id })
     } catch (error) {
-      console.log(error)
       res.status(404).send({ message: 'Post not found' })
     }
   })
